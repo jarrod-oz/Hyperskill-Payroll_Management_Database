@@ -1,1 +1,1 @@
-![Database Schema](./Payroll_ERD.png)
+![Database Schema](/Payroll_ERD.png)
