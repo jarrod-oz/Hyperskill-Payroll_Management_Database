@@ -31,8 +31,3 @@ BEGIN
     END
   );
 END;
-
-SET @DD_Tax = TaxOwed(5000);
-SET @PW_Tax = TaxOwed(50000);
-
-SELECT @PW_Tax AS 'Philip Wilson', @DD_Tax AS 'Daisy Diamond';
