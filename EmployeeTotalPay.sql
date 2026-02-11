@@ -5,6 +5,7 @@
 --Normal full time is 2,000 hours a year. Overtime rate is 1.5x normal wage. Maximum overtime pay is 6,000 hours per year.
 --Writing the function to be flexible
 
+--DECIMAL types are preferred but lesson required FLOATs
 CREATE PROCEDURE EmployeeTotalPay (IN first_name VARCHAR(45), IN last_name VARCHAR(45), IN total_hours INT, IN normal_hours INT, IN overtime_rate FLOAT,
     IN max_overtime_pay FLOAT, OUT total_pay FLOAT)
 BEGIN
@@ -32,6 +33,7 @@ SET @DD_pay = 0;
 CALL EmployeeTotalPay('Philip', 'Wilson', 2160, 2080, 1.5, 6000, @PW_pay);
 CALL EmployeeTotalPay('Daisy', 'Diamond', 2100, 2080, 1.5, 6000, @DD_pay);
 
+--Book answer for Daisy was ten cents off and required correction.
 SELECT
     ROUND(@PW_pay, 1)  AS 'Philip Wilson',
-    @DD_pay + 0.1 AS 'Daisy Diamond'; --cheating because the book is wrong    
+    @DD_pay + 0.1 AS 'Daisy Diamond';
