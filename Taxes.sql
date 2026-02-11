@@ -14,16 +14,25 @@
 --1. Create the function called TaxOwed that takes an employee's taxable income of an employee and outputs the tax owed.
 --2. Output the tax owed by Philip Wilson and Daisy Diamond.
 
-CREATE PROCEDURE TaxOwed (IN income FLOAT(10, 1), OUT tax_owed FLOAT(10, 1))
+CREATE FUNCTION TaxOwed (income FLOAT)
+RETURNS FLOAT
+DETERMINISTIC
 BEGIN
-  SET tax_owed = CASE
-    WHEN ROUND(income, 0) BETWEEN 0 AND 11000 THEN income * 0.10
-    WHEN ROUND(income, 0) BETWEEN 11001 AND 44725 THEN (1100 + 0.12 * (income - 11000))
-    WHEN ROUND(income, 0) BETWEEN 44726 AND 95375 THEN (5147 + 0.22 * (income - 44725))
-    WHEN ROUND(income, 0) BETWEEN 95376 AND 182100 THEN (16290 + 0.24 * (income - 95375))
-    WHEN ROUND(income, 0) BETWEEN 182101 AND 231250 THEN (37104 + 0.32 * (income - 182100))
-    WHEN ROUND(income, 0) BETWEEN 231251 AND 578125 THEN (52832 + 0.35 * (income - 231250))
-    WHEN ROUND(income, 0) >= 578126 THEN (174238.25 + 0.37 * (income - 578125))
-    ELSE 0 --we are assuming no refundable credits (negative income means zero tax, not negative tax) and this also handles invalid input
-  END;
+  RETURN (
+    CASE
+      WHEN ROUND(income, 0) BETWEEN 0 AND 11000 THEN income * 0.10
+      WHEN ROUND(income, 0) BETWEEN 11001 AND 44725 THEN (1100 + 0.12 * (income - 11000))
+      WHEN ROUND(income, 0) BETWEEN 44726 AND 95375 THEN (5147 + 0.22 * (income - 44725))
+      WHEN ROUND(income, 0) BETWEEN 95376 AND 182100 THEN (16290 + 0.24 * (income - 95375))
+      WHEN ROUND(income, 0) BETWEEN 182101 AND 231250 THEN (37104 + 0.32 * (income - 182100))
+      WHEN ROUND(income, 0) BETWEEN 231251 AND 578125 THEN (52832 + 0.35 * (income - 231250))
+      WHEN ROUND(income, 0) >= 578126 THEN (174238.25 + 0.37 * (income - 578125))
+      ELSE 0 --we are assuming no refundable credits (negative income means zero tax, not negative tax) and this also handles invalid input
+    END
+  );
 END;
+
+SET @DD_Tax = TaxOwed(5000);
+SET @PW_Tax = TaxOwed(50000);
+
+SELECT @PW_Tax AS 'Philip Wilson', @DD_Tax AS 'Daisy Diamond';
